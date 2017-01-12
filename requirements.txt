@@ -2,4 +2,4 @@ scikit-image==0.12.3
 pytest==3.0.5
 pillow==3.2.0
 numpy==1.11.3
-opencv==3.2.0.6
+opencv-python==3.2.0.6
