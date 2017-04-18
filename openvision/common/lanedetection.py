@@ -1,3 +1,5 @@
+from __future__ import division
+
 import numpy as np
 from skimage import data, io, filters
 from PIL import Image

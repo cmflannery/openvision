@@ -1,25 +1,15 @@
 #!/usr/bin/env python
+from __future__ import division
+
 import os
 import sys
 import inspect
 import cv2
 from PIL import Image
 from numpy import matrix
-cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split
-                                 (inspect.getfile(inspect.currentframe()))[0],
-                                 "common")))
-if cmd_subfolder not in sys.path:
-    sys.path.insert(0, cmd_subfolder)
-from lanedetection import *
-# openvision.py - description
-__author__ = "Cameron Flannery, Hui Jiang"
-__copyright__ = "Copyright 2017"
-__credits__ = ["Cameron Flannery, Hui Jiang"]
-__license__ = "MIT"
-__version__ = "0.1"
-__maintainer__ = "Cameron Flannery"
-__email__ = "cmflannery@ucsd.edu"
-__status__ = "Alpha"
+from common.lanedetection import *
+import common.track as track
+import common.detect as detect
 
 
 class vision(object):
@@ -34,7 +24,36 @@ class vision(object):
         lanes.show_image()
 
 
-def main():
+def main(video_path):
+    cap = cv2.VideoCapture(video_path)
+
+    ticks = 0
+
+    lt = track.LaneTracker(2, 0.1, 500)
+    ld = detect.LaneDetector(180)
+    while cap.isOpened():
+        precTick = ticks
+        ticks = cv2.getTickCount()
+        dt = (ticks - precTick) / cv2.getTickFrequency()
+
+        ret, frame = cap.read()
+
+        predicted = lt.predict(dt)
+
+        lanes = ld.detect(frame)
+
+        if predicted is not None:
+            cv2.line(frame, (predicted[0][0], predicted[0][1]), (predicted[0][2], predicted[0][3]), (0, 0, 255), 5)
+            cv2.line(frame, (predicted[1][0], predicted[1][1]), (predicted[1][2], predicted[1][3]), (0, 0, 255), 5)
+
+        lt.update(lanes)
+
+        cv2.imshow('', frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+
+def main_old():
     prototyping_image = os.path.join(os.getcwd(), 'resources', 'frontfacing01.jpeg')
     auto_view = vision(prototyping_image)
 

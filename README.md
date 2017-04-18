@@ -1,5 +1,5 @@
 # Welcome to openvision
-[![Build status](https://travis-ci.org/cmflannery/openvision.svg?branch=master)](https://travis-ci.org/cmflannery/openrocketengine)
+[![Build status](https://travis-ci.org/cmflannery/openvision.svg?branch=master)](https://travis-ci.org/cmflannery/openvision)
 
 openvision is an opensouce project focused on creating an efficient and robust image processor to be used for vision for autonomous driving. Currently, openvision is developed in python. It is likely that openvision will be ported to a lower level language to increase speed.
 
